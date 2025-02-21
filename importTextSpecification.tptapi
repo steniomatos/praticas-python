@@ -1,0 +1,31 @@
+import os
+
+# Obtém o projeto TPT ativo
+prj = TPTAPI.getSelectedProject()
+
+# Obtém o testlet principal (top-level)
+topT = prj.getTopLevelTestlet()
+
+# Nome do Step List que queremos exportar
+step_list_name = "Steplist"
+
+# Procura pelo Step List no projeto
+step_list = topT.getScenario(step_list_name)
+
+    # Caminho do arquivo de saída
+    output_file = f"{step_list_name}.txt"
+
+    try:
+        with open(output_file, "w", encoding="utf-8") as out_f:  # Arquivo é fechado automaticamente
+            steps = step_list.getSteps()  # Obtém os passos
+            
+            if not steps:
+                print(f"Erro: O Step List '{step_list_name}' não contém passos.")
+            else:
+                for step in steps:
+                    out_f.write(step.toString().strip() + "\n")  # Escreve cada passo
+            
+        print(f"Arquivo '{output_file}' criado com sucesso!")
+
+    except Exception as e:
+        print(f"Erro ao escrever no arquivo: {e}")
